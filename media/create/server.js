@@ -50,7 +50,7 @@ function server(fw) {
                     tempData.imageUrl = file.url;
                     console.log(tempData);
                         fw.getApiInstance('mongo').insert({
-                            dbName: 'test',
+                            dbName : 'eventTest',
                             tableName: 'posts',
                             value : tempData
                         }, result1 => {
@@ -78,7 +78,7 @@ function server(fw) {
                     tempData.imageUrl = null;
                 console.log(tempData);
                     fw.getApiInstance('mongo').insert({
-                        dbName: 'test',
+                        dbName : 'eventTest',
                         tableName: 'posts',
                         value : tempData
                     }, result1 => {
