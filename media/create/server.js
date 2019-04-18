@@ -25,6 +25,7 @@ function server(fw) {
 
     function createPost(req, res) {
         upload(req, res, function (err) {
+            console.log(err);
             if (err) {
                 console.log(err);
                 res.json({
