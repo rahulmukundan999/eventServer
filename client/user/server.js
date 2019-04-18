@@ -17,7 +17,7 @@ function server(fw) {
             query: {
                 'emailId': data.emailId,
             },
-            dbName: 'eventTest',
+            dbName: 'eventtest',
             tableName: 'users'
         }, result => {
             if (result.status == 200 && result.data.length > 0) {
@@ -45,14 +45,14 @@ function server(fw) {
             query: {
                 'emailId': data.emailId,
             },
-            dbName: 'eventTest',
+            dbName: 'eventtest',
             tableName: 'users'
         }, result => {
             if (result.status == 200 && result.data.length == 0) {
                 data.password = bcrypt.hashSync(data.password, 10);
                 fw.getApiInstance('mongo').insert({
                     value: data,
-                    dbName: 'eventTest',
+                    dbName: 'eventtest',
                     tableName: 'users'
                 }, result => {
                     console.log(result);
@@ -84,7 +84,7 @@ function server(fw) {
             },
             skip: data.skip,
             limit: 12,
-            dbName: 'eventTest',
+            dbName: 'eventtest',
             tableName: 'posts',
             // skip : data.skip,
             // limit : 100

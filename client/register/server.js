@@ -10,7 +10,7 @@ function server(fw) {
             query: {
                 'id': data.id,
             },
-            dbName : 'eventTest',
+            dbName: 'eventtest',
             tableName: 'posts'
         }, result => {
             if (result.status == 200) {
@@ -27,7 +27,7 @@ function server(fw) {
 
     function registerEvent(data, callback) {
         fw.getApiInstance('mongo').insert({
-            dbName : 'eventTest',
+            dbName: 'eventtest',
             tableName: 'registrations',
             value: data
         }, result => {
