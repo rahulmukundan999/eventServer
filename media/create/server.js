@@ -25,83 +25,83 @@ function server(fw) {
 
     function createPost(req, res) {
         upload(req, res, function (err) {
-            console.log('error file upload', err);
-            if (err) {
-                console.log(err);
-                res.json({
-                    status: 500,
-                    msg: 'sorry'
-                })
-            } else {
-                console.log(req.files);
-                if (req.files.length > 0) {
-                    var tempData = JSON.parse(req.body.data);
-                    cloudinary.v2.uploader.upload(tempData.baseData,
-                        function (error, result) {
-                            console.log(error);
-                            if (error) {
+            //     console.log('error file upload', err);
+            //     if (err) {
+            //         console.log(err);
+            //         res.json({
+            //             status: 500,
+            //             msg: 'sorry'
+            //         })
+            //     } else {
+            //         console.log(req.files);
+            //         if (req.files.length > 0) {
+            var tempData = JSON.parse(req.body.data);
+            cloudinary.v2.uploader.upload(tempData.baseData,
+                function (error, result) {
+                    console.log(error);
+                    if (error) {
+                        res.json({
+                            status: 500,
+                            msg: 'Could not create'
+                        })
+                    } else {
+                        var file = result;
+                        console.log(req.body.data);
+
+                        console.log('temo', tempData)
+                        delete tempData.image;
+                        tempData.approved = false;
+                        tempData.createdDate = fw.getTimeStamp();
+                        tempData.imageUrl = file.url;
+                        console.log(tempData);
+                        fw.getApiInstance('mongo').insert({
+                            dbName: 'eventtest',
+                            tableName: 'posts',
+                            value: tempData
+                        }, result1 => {
+                            console.log(result1);
+                            if (result1.status == 200) {
                                 res.json({
-                                    status: 500,
-                                    msg: 'Could not create'
+                                    status: 200,
+                                    msg: 'uploaded'
                                 })
                             } else {
-                                var file = result;
-                                console.log(req.body.data);
-
-                                console.log('temo', tempData)
-                                delete tempData.image;
-                                tempData.approved = false;
-                                tempData.createdDate = fw.getTimeStamp();
-                                tempData.imageUrl = file.url;
-                                console.log(tempData);
-                                fw.getApiInstance('mongo').insert({
-                                    dbName: 'eventtest',
-                                    tableName: 'posts',
-                                    value: tempData
-                                }, result1 => {
-                                    console.log(result1);
-                                    if (result1.status == 200) {
-                                        res.json({
-                                            status: 200,
-                                            msg: 'uploaded'
-                                        })
-                                    } else {
-                                        res.json({
-                                            status: 500,
-                                            msg: 'sorry'
-                                        })
-                                    }
-                                });
+                                res.json({
+                                    status: 500,
+                                    msg: 'sorry'
+                                })
                             }
                         });
-                } else {
-                    var tempData = JSON.parse(req.body.data);
-                    console.log('temo', tempData)
-                    delete tempData.image;
-                    tempData.approved = false;
-                    tempData.createdDate = fw.getTimeStamp();
-                    tempData.imageUrl = null;
-                    console.log(tempData);
-                    fw.getApiInstance('mongo').insert({
-                        dbName: 'eventtest',
-                        tableName: 'posts',
-                        value: tempData
-                    }, result1 => {
-                        console.log(result1);
-                        if (result1.status == 200) {
-                            res.json({
-                                status: 200,
-                                msg: 'uploaded'
-                            })
-                        } else {
-                            res.json({
-                                status: 500,
-                                msg: 'sorry'
-                            })
-                        }
-                    });
-                }
-            }
+                    }
+                });
+            // } else {
+            //     var tempData = JSON.parse(req.body.data);
+            //     console.log('temo', tempData)
+            //     delete tempData.image;
+            //     tempData.approved = false;
+            //     tempData.createdDate = fw.getTimeStamp();
+            //     tempData.imageUrl = null;
+            //     console.log(tempData);
+            //     fw.getApiInstance('mongo').insert({
+            //         dbName: 'eventtest',
+            //         tableName: 'posts',
+            //         value: tempData
+            //     }, result1 => {
+            //         console.log(result1);
+            //         if (result1.status == 200) {
+            //             res.json({
+            //                 status: 200,
+            //                 msg: 'uploaded'
+            //             })
+            //         } else {
+            //             res.json({
+            //                 status: 500,
+            //                 msg: 'sorry'
+            //             })
+            //         }
+            //     });
+            // }
+            // }
         });
     }
 }
