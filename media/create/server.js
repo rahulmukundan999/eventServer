@@ -25,7 +25,7 @@ function server(fw) {
 
     function createPost(req, res) {
         upload(req, res, function (err) {
-            console.log(err);
+            console.log('error file upload', err);
             if (err) {
                 console.log(err);
                 res.json({
@@ -35,7 +35,8 @@ function server(fw) {
             } else {
                 console.log(req.files);
                 if (req.files.length > 0) {
-                    cloudinary.v2.uploader.upload(req.files[0].destination + req.files[0].filename,
+                    var tempData = JSON.parse(req.body.data);
+                    cloudinary.v2.uploader.upload(tempData.baseData,
                         function (error, result) {
                             console.log(error);
                             if (error) {
@@ -46,7 +47,7 @@ function server(fw) {
                             } else {
                                 var file = result;
                                 console.log(req.body.data);
-                                var tempData = JSON.parse(req.body.data);
+
                                 console.log('temo', tempData)
                                 delete tempData.image;
                                 tempData.approved = false;
